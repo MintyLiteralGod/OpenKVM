@@ -51,3 +51,38 @@ private void ModHook_AfterPacketReceived(ref byte action, ref int x, ref int y)
 {
     // Write your custom Slave processing overrides here immediately after unpacking
 }
+💾 Installation & Local Deployment
+Option A: The Windows Setup Wizard (Recommended)
+Download OpenKVM_v5.0_Setup.exe from the latest release thread.
+
+Run the installer (Accept the UAC Administrator credential prompt).
+
+Follow the wizard configuration deck to launch the service.
+
+Option B: Compiling from Source
+Ensure you have the .NET 7.0 SDK installed on your terminal ecosystem.
+
+DOS
+# Clone the repository workspace
+git clone [https://github.com/MintyLiteralGod/OpenKVM.git](https://github.com/MintyLiteralGod/OpenKVM.git)
+cd OpenKVM
+
+# Compile a self-contained standalone optimized single-file binary release
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:EnableCompressionInSingleFile=true
+❓ Frequently Asked Questions (FAQ)
+🔴 Why does OpenKVM request Administrator privileges on startup?
+Windows security policies explicitly block standard user-level hooks from injecting inputs or monitoring keystrokes when an elevated window (such as a command prompt, installer, or Task Manager) is active on the screen. Running OpenKVM as Admin guarantees that your mouse and keyboard will never lock up or stop responding when navigating sensitive windows.
+
+🔴 Do I need to manually configure my IP addresses?
+No. If the Slave Receiver is turned on and running first, OpenKVM’s active background mDNS beaconing loop will broadcast its presence. The Master Station will automatically pick up the slave node over your local router and populate the target interface address space automatically.
+
+🔴 Is it safe to type my passwords while OpenKVM is active?
+Yes. Thanks to the integrated cryptographic framework layer, all keystroke frames are encrypted using a fast, allocation-free symmetric stream cipher before being broadcast onto your local router channels. Ensure both your Master and Slave units are pointing to the exact same Pre-Shared Key (PSK).
+
+🔴 Does this program require an active internet connection?
+Absolutely not. OpenKVM operates completely offline, processing commands locally over your home router subnet. No telemetry, usage data, or configuration parameters are ever uploaded to any cloud server space.
+
+📄 License
+Distributed under the MIT License. See LICENSE for more information.
+
+Developed openly by MintyLiteralGod.
