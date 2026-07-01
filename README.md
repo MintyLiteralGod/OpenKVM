@@ -51,6 +51,7 @@ private void ModHook_AfterPacketReceived(ref byte action, ref int x, ref int y)
 {
     // Write your custom Slave processing overrides here immediately after unpacking
 }
+```
 💾 Installation & Local Deployment
 Option A: The Windows Setup Wizard (Recommended)
 Download OpenKVM_v5.0_Setup.exe from the latest release thread.
