@@ -3,43 +3,66 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)]()
 [![Framework: .NET 7.0](https://img.shields.io/badge/Framework-.NET%207.0-purple.svg)]()
+[![Security: Symmetric Cipher](https://img.shields.io/badge/Security-Encrypted%20Bus-green.svg)]()
 
-**OpenKVM** is an ultra-lightweight, high-performance, zero-dependency network KVM switch written natively in C#. It allows you to seamlessly share a single mouse and keyboard across multiple separate computers over a local network, bypassing the bloat, telemetry, and performance overhead of modern Electron-based options.
+**OpenKVM** is an ultra-lightweight, high-performance, zero-dependency network KVM software suite written natively in C#. It allows you to seamlessly share a single physical mouse and keyboard across multiple separate computers over a local network ecosystem. 
 
-The **v5.0 Enterprise Shield Edition** introduces native cryptographic packet scrambling, absolute coordinate mapping for mixed-resolution monitors, automated network node discovery, and robust kernel hook safeguards.
-
----
-
-## ⚡ Core Features
-
-* **Dual-Channel Low-Level Hijacking (`WH_MOUSE_LL` & `WH_KEYBOARD_LL`):** Intercepts and swallows local hardware events at the OS kernel boundary when operating in remote mode, streaming inputs directly across your router.
-* **Topographical Monitor Positioning:** Supports standard screen edge boundary mapping. Route your mouse across the **Right, Left, Top, or Bottom** border walls to seamlessly leap onto the secondary rig.
-* **Absolute Coordinate Normalization:** Converts screen vectors into an absolute percentage coordinate scale between `0` and `65535`. This guarantees flawless cursor tracking when mixing a primary 4K master rig with a 1080p target laptop.
-* **Drag-and-Drop TCP File Streaming:** Drop any file directly onto the OpenKVM program panel. The Master serializes the file structure, pumps it over a high-speed TCP lane, and the Slave reconstructs it instantly on your remote **Desktop**.
-* **Asynchronous Text Clipboard Synchronization:** Copy text on your primary machine, cross the screen border threshold, and paste it instantly on your target computer.
-* **Automated UDP Node Beaconing:** Slave units broadcast passive identity discovery packets over the local submask (`255.255.255.255`). Master rigs catch these beacons and map target connections automatically—no manual IP typing required.
-* **System Tray Minimization Overlay:** Clicking **✕** cleanly background-tasks the service directly into your native Windows notification system tray, freeing up your desktop real estate.
+By bypassing the heavy resource bloat, background telemetry, and micro-stuttering common in modern Electron-based utilities, OpenKVM delivers near zero-latency peripheral responses directly inside production, flight-simulation, and gaming environments.
 
 ---
 
-## 🔒 Security & Guardrail Profile
+## 📐 System Architecture
 
-OpenKVM implements strict defense-in-depth measures to protect your physical system inputs and private local data over the air:
+OpenKVM operates symmetrically. You run the exact same binary executable on both machines, setting one as the **Master Workstation** and the other as the **Slave Target Node**.
 
-### 🛡️ Symmetric Stream Cipher Engine
-Every operational packet (mouse trajectories, button states, file fragments, and virtual keyboard keycodes) is passed through a rolling symmetric XOR cipher utilizing a Pre-Shared Key (PSK). Plaintext keystrokes are scrambled in cache memory before hitting your local network adapters, completely mitigating packet-sniffing or credential-harvesting vulnerabilities from malicious entities on your Wi-Fi network.
+[ MASTER WORKSTATION ]                         [ SLAVE TARGET NODE ]
++------------------------+                     +-----------------------+
+|  Low-Level OS Hooks    |                     |  UDP Listener Port    |
+| (WH_MOUSE & KEYBOARD)  |                     |        (5555)         |
++-----------+------------+                     +-----------+-----------+
+|                                              ^
+|  1. Scramble via PSK                         | 3. Descramble via PSK
+v                                              | 4. Inject via Win32 API
++-----------+------------+                     +-----------+-----------+
+| High-Speed Encrypted   |=[ WiFi/LAN ]=>|  Cursor & Keystroke   |
+|   UDP Stream Packet    |     Local Subnet    |   Hardware Injection  |
++------------------------+                     +-----------------------+
+|                                              |
++<======= Heartbeat Watchdog ============+
 
-### ⏱️ Fail-Safe Heartbeat Watchdog
-If your local router drops connection or the Slave computer locks up while your master cursor is hidden, a dedicated watchdog monitor triggers. If a lightweight "Keep-Alive" heartbeat ping fails to clear every 1500ms, OpenKVM instantly detaches all global OS hooks, sets `remoteMode = false`, and restores full hardware control to your main desktop screen.
-
-### 👑 Manifest Privilege Escalation
-OpenKVM automatically requests Windows administrative elevation on boot. This ensures its low-level hooks possess the security clearance required to operate inside system-protected windows like **Task Manager, Command Prompt, or games running with Administrator rights**.
 
 ---
 
-## 💻 Modding & Open Source Extension Hooks
+## ⚡ Core Feature Deep-Dive
 
-OpenKVM is designed to be fully moddable. If you want to customize coordinate mutations, add custom macro integrations, or inject alternative packet processing filters, you do not need to rewrite the driver loop. Simply hook your custom code directly into these explicit entry points inside `Program.cs`:
+* **Dual-Channel Kernel Interception:** Intercepts hardware events at the OS kernel boundary using native global low-level hooks (`WH_MOUSE_LL` and `WH_KEYBOARD_LL`). When active, inputs are swallowed locally and piped directly onto your home network router bus.
+* **Topographical Monitor Positioning:** Maps physical layouts with 4-way directionality. Select whether your secondary screen sits to the **Right, Left, Top, or Bottom** of your master monitor to define exactly which border wall triggers the screen transition.
+* **Absolute Coordinate Normalization:** Translates screen coordinate points into an absolute mathematical scale ranging between `0` and `65535`. This ensures consistent cursor tracking when bridging mismatched displays, such as a 4K desktop monitor traversing onto a 1080p laptop screen.
+* **Drag-and-Drop TCP File Sharing:** Simplifies file sharing down to a simple gesture. Drag any asset or document path from your master machine and drop it directly onto the OpenKVM application window. The engine securely streams the byte arrays over an independent TCP socket on port `5557`, automatically saving the file directly onto the remote Slave's **Desktop**.
+* **Asynchronous Text Clipboard Syncing:** Bridges clipboard buffers instantly. Copying text on your master workstation automatically transmits the payload across the boundary line, allowing you to hit paste on the secondary computer with zero manual steps.
+* **Automated UDP Beaconing Discovery:** Eliminates the frustration of typing local IPv4 addresses. Slave units broadcast passive identification tokens out onto your local submask address space (`255.255.255.255`). Master rigs actively listen for these beacons on port `5558` and instantly auto-populate the connection targeted field.
+* **System Tray Minimization Engine:** Backgrounds itself without taking up space. Closing the application interface frame intercepts the termination request, hiding the panel from your taskbar while keeping the underlying driver bus alive inside the Windows System Tray.
+
+---
+
+## 🔒 Enterprise Guardrail & Security Blueprint
+
+OpenKVM is engineered from the ground up with defensive security guardrails to keep your private keystrokes and data isolated over local wireless channels:
+
+### 🛡️ Allocation-Free Symmetric Cipher Engine
+Every data frame traversing the local network is pushed through an inline rolling symmetric cipher utilizing a user-defined Pre-Shared Key (PSK). Keystrokes, mouse operations, and file payloads are scrambled directly inside secure RAM before broadcasting over network cards. This renders the data useless against local network sniffing tools or credential-harvesting vulnerabilities on shared home networks.
+
+### ⏱️ Fail-Safe Watchdog Heartbeat
+If your local router stumbles, power-cycles, or the Slave computer crashes while inputs are being swallowed by the Master, your local mouse will not be left permanently frozen. OpenKVM runs a high-priority background watchdog thread. If the Slave node fails to clear a lightweight keep-alive heartbeat confirmation packet within `1500ms`, the Master forces an emergency fallback event—reclaiming local input streams instantly.
+
+### 👑 Programmatic UAC Manifest Escalation
+OpenKVM automatically tests and escalates its local process token to full Windows Administrative elevation upon initialization. This security architecture ensures that low-level hardware hooks retain the necessary clearance to execute inputs even when crossing into protected system environments, such as **Task Manager, Command Prompt, or games running with Administrator rights**.
+
+---
+
+## 🔧 Modding & Custom Extensions
+
+OpenKVM is built for customization. If you or your community want to add macro triggers, manipulate coordinate maps, or include alternative data serialization logic, you do not need to touch the foundational networking drivers. Simply inject your custom C# code directly into these explicit modifier hooks:
 
 ```csharp
 private void ModHook_BeforePacketSend(ref byte action, ref int x, ref int y)
@@ -52,38 +75,43 @@ private void ModHook_AfterPacketReceived(ref byte action, ref int x, ref int y)
     // Write your custom Slave processing overrides here immediately after unpacking
 }
 ```
-💾 Installation & Local Deployment
-Option A: The Windows Setup Wizard (Recommended)
-Download OpenKVM_v5.0_Setup.exe from the latest release thread.
+### 📦 Installation & Setup Guide
+#Method A: Automated Windows Setup Wizard (Recommended)
+Navigate to the Releases tab on this repository page.
 
-Run the installer (Accept the UAC Administrator credential prompt).
+Download the unified executable installer package: OpenKVM_v5.0_Setup.exe.
 
-Follow the wizard configuration deck to launch the service.
+Launch the installer, accept the Windows UAC elevation prompt, and follow the wizard instructions to place short-cut registries onto your Desktop and Start Menu.
 
-Option B: Compiling from Source
-Ensure you have the .NET 7.0 SDK installed on your terminal ecosystem.
+#Method B: Compiling Direct From Source
+Ensure your local development terminal environment possesses the native .NET 7.0 SDK configuration tier.
 
-DOS
-# Clone the repository workspace
+# DOS
+``` # 1. Clone the master repository manifest
 git clone [https://github.com/MintyLiteralGod/OpenKVM.git](https://github.com/MintyLiteralGod/OpenKVM.git)
 cd OpenKVM
 
-# Compile a self-contained standalone optimized single-file binary release
+# 2. Compile an independent, compressed, standalone production single-file release
 dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:EnableCompressionInSingleFile=true
-❓ Frequently Asked Questions (FAQ)
-🔴 Why does OpenKVM request Administrator privileges on startup?
-Windows security policies explicitly block standard user-level hooks from injecting inputs or monitoring keystrokes when an elevated window (such as a command prompt, installer, or Task Manager) is active on the screen. Running OpenKVM as Admin guarantees that your mouse and keyboard will never lock up or stop responding when navigating sensitive windows.
 
-🔴 Do I need to manually configure my IP addresses?
-No. If the Slave Receiver is turned on and running first, OpenKVM’s active background mDNS beaconing loop will broadcast its presence. The Master Station will automatically pick up the slave node over your local router and populate the target interface address space automatically.
+# 3. Locate your compiled distribution assembly binary
+cd bin\Release\net7.0-windows\win-x64\publish\
+dir
+```
+### ❓ Frequently Asked Questions (FAQ)
+Q: Why does OpenKVM request Administrator privileges immediately when I open it?
+A: Windows security layers explicitly prohibit low-level user-tier keyboard hooks from tracking or injecting input frames when an elevated program (like Task Manager, an installation wizard, or an Admin terminal) gains system focus. Running OpenKVM as Admin ensures your mouse and keyboard transitions remain operational no matter what application window is currently active.
 
-🔴 Is it safe to type my passwords while OpenKVM is active?
-Yes. Thanks to the integrated cryptographic framework layer, all keystroke frames are encrypted using a fast, allocation-free symmetric stream cipher before being broadcast onto your local router channels. Ensure both your Master and Slave units are pointing to the exact same Pre-Shared Key (PSK).
+Q: Do I need an active internet connection or account to run OpenKVM?
+A: Absolutely not. OpenKVM runs completely offline over your local home router subnets. No telemetry, usage tracking parameters, or configuration properties are ever transmitted to external servers.
 
-🔴 Does this program require an active internet connection?
-Absolutely not. OpenKVM operates completely offline, processing commands locally over your home router subnet. No telemetry, usage data, or configuration parameters are ever uploaded to any cloud server space.
+Q: Is it safe to enter passwords or credit cards through OpenKVM?
+A: Yes. Unlike generic network sharing tools that ship inputs via clear plaintext, OpenKVM scrambles every keystroke via an integrated allocation-free symmetric stream cipher. Ensure you assign a strong, identical Pre-Shared Key (PSK) inside the user fields of both machines to securely align the cryptographic states.
 
-📄 License
-Distributed under the MIT License. See LICENSE for more information.
+Q: Why isn't my mouse returning to my Master PC when I swipe back?
+A: Ensure your Monitor Location setting matches your physical desk layout. For example, if you mapped your slave display to sit on the Right Border, you must swipe your mouse hard to the Left against the left boundary wall of your Slave monitor to return the pointer focus back to your Master screen.
 
-Developed openly by MintyLiteralGod.
+# 📄 License
+Distributed completely under the open-source MIT License. Check out the LICENSE file for extended text details.
+
+Maintained and published openly by MintyLiteralGod.
