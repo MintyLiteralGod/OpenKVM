@@ -86,7 +86,7 @@ Launch the installer, accept the Windows UAC elevation prompt, and follow the wi
 #Method B: Compiling Direct From Source
 Ensure your local development terminal environment possesses the native .NET 7.0 SDK configuration tier.
 
-# DOS
+### DOS
 ``` # 1. Clone the master repository manifest
 git clone [https://github.com/MintyLiteralGod/OpenKVM.git](https://github.com/MintyLiteralGod/OpenKVM.git)
 cd OpenKVM
@@ -98,7 +98,7 @@ dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=
 cd bin\Release\net7.0-windows\win-x64\publish\
 dir
 ```
-### ❓ Frequently Asked Questions (FAQ)
+# ❓ Frequently Asked Questions (FAQ)
 Q: Why does OpenKVM request Administrator privileges immediately when I open it?
 A: Windows security layers explicitly prohibit low-level user-tier keyboard hooks from tracking or injecting input frames when an elevated program (like Task Manager, an installation wizard, or an Admin terminal) gains system focus. Running OpenKVM as Admin ensures your mouse and keyboard transitions remain operational no matter what application window is currently active.
 
