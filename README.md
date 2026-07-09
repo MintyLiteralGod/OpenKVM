@@ -14,7 +14,7 @@ By bypassing the heavy resource bloat, background telemetry, and micro-stutterin
 ## 📐 System Architecture
 
 OpenKVM operates symmetrically. You run the exact same binary executable on both machines, setting one as the **Master Workstation** and the other as the **Slave Target Node**.
-
+```
 [ MASTER WORKSTATION ]                         [ SLAVE TARGET NODE ]
 +------------------------+                     +-----------------------+
 |  Low-Level OS Hooks    |                     |  UDP Listener Port    |
@@ -29,7 +29,7 @@ v                                              | 4. Inject via Win32 API
 +------------------------+                     +-----------------------+
 |                                              |
 +<======= Heartbeat Watchdog ============+
-
+```
 
 ---
 
